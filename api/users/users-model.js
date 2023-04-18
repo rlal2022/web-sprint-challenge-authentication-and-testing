@@ -14,7 +14,7 @@ async function add({ username, password }) {
 }
 
 function findBy(filter) {
-  return db("users").where(filter).first();
+  return db("users").where(filter).orderBy("id");
 }
 
 module.exports = { find, findById, add, findBy };

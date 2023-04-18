@@ -26,7 +26,8 @@ async function checkIfUsernameExists(req, res, next) {
 }
 
 function checkCredentials(req, res, next) {
-  if (!req.body.username || !req.body.password) {
+  const { username, password } = req.body;
+  if (!username || !password) {
     next({ status: 401, message: "username and password required" });
   } else {
     next();

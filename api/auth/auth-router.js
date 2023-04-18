@@ -14,11 +14,11 @@ router.post(
   checkUsername,
   checkCredentials,
   async (req, res, next) => {
-    const { user } = req.body;
-    const hash = bcrypt.hashSync(user.password, 8);
-    user.password = hash;
+    let { username, password } = req.body;
+    const hash = bcrypt.hashSync(password, 8);
+    password = hash;
 
-    await User.add({ username: user.username, password: user.password })
+    User.add({ username, password })
       .then((newUser) => {
         res.status(201).json(newUser);
       })
@@ -56,11 +56,11 @@ router.post(
   checkIfUsernameExists,
   checkCredentials,
   (req, res, next) => {
-    const { username, password } = req.body;
+    const { password } = req.body;
 
     if (bcrypt.compareSync(password, req.user.password)) {
       const token = buildToken(req.user);
-      res.status(200).json({ message: `welcome, ${username}`, token });
+      res.status(200).json({ message: `welcome, ${req.user.username}`, token });
     } else {
       res.status(401).json({ message: "invalid credentials" });
     }

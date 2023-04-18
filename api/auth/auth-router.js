@@ -71,7 +71,7 @@ router.post(
       const token = buildToken(req.user);
       res.status(200).json({ message: `welcome, ${req.user.username}`, token });
     } else {
-      res.status(401).json({ message: "invalid credentials" });
+      next({ status: 401, message: "invalid credentials" });
     }
 
     // const { username, password } = req.body;

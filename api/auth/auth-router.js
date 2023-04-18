@@ -11,7 +11,7 @@ const {
 
 router.post(
   "/register",
-  checkUsername,
+  checkIfUsernameExists,
   checkCredentials,
   async (req, res, next) => {
     let { username, password } = req.body;

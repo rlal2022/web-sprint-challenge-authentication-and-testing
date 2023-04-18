@@ -1,35 +1,33 @@
 const User = require("../users/users-model");
-const db = require("../../data/dbConfig");
 
 async function checkUsername(req, res, next) {
-  const user = await db("users".where("username"), req.body.username).first();
-  if (!user) {
-    next();
-  } else {
-    next({ status: 422, message: "Username taken" });
+  try {
+    const [user] = await User.findBy({ username: req.body.username });
+    if (user) {
+      next({ status: 401, message: "username taken" });
+    } else {
+      next();
+    }
+  } catch (err) {
+    next(err);
   }
 }
 
 async function checkIfUsernameExists(req, res, next) {
-  const user = await User.findBy({ username: req.body.username });
-  if (user) {
+  const [user] = await User.findBy({ username: req.body.username });
+  if (!user) {
     next({ status: 401, message: "Invalid credentials" });
   } else {
+    req.user = user;
     next();
   }
 }
 
 function checkCredentials(req, res, next) {
-  const user = req.body;
-  if (
-    user.username &&
-    user.password &&
-    user.username.length &&
-    user.password.length
-  ) {
-    next();
-  } else {
+  if (!req.body.username || !req.body.password) {
     next({ status: 401, message: "username and password required" });
+  } else {
+    next();
   }
 }
 

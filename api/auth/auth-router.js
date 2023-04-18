@@ -95,7 +95,7 @@ router.post(
 
 function buildToken(user) {
   const payload = {
-    subject: user.id,
+    subject: user.user_id,
     username: user.username,
   };
   const options = {

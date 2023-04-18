@@ -15,7 +15,7 @@ router.post(
   checkCredentials,
   async (req, res, next) => {
     let { username, password } = req.body;
-    console.log(req.body.username);
+    console.log(req.body, "register");
     const hash = bcrypt.hashSync(password, 8);
     password = hash;
     User.add({ username, password })
@@ -66,10 +66,11 @@ router.post(
   checkCredentials,
   (req, res, next) => {
     const { password } = req.body;
-    console.log(req.body);
+    console.log(req.body, "login");
     if (bcrypt.compareSync(password, req.user.password)) {
       const token = buildToken(req.user);
       res.status(200).json({ message: `welcome, ${req.user.username}`, token });
+      next();
     } else {
       next({ status: 401, message: "invalid credentials" });
     }

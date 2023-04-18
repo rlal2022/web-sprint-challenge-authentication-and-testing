@@ -18,7 +18,7 @@ router.post(
     const hash = bcrypt.hashSync(password, 8);
     password = hash;
 
-    User.add({ username, password })
+    await User.add({ username, password })
       .then((newUser) => {
         res.status(201).json(newUser);
       })

@@ -11,7 +11,7 @@ const {
 
 router.post(
   "/register",
-  checkIfUsernameExists,
+  checkUsername,
   checkCredentials,
   async (req, res, next) => {
     let { username, password } = req.body;
@@ -93,7 +93,7 @@ router.post(
 
 function buildToken(user) {
   const payload = {
-    subject: user.user_id,
+    subject: user.id,
     username: user.username,
   };
   const options = {

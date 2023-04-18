@@ -10,7 +10,7 @@ function findById(id) {
 
 async function add({ username, password }) {
   const [id] = await db("users").insert({ username, password });
-  return findById({ username, password });
+  return findById(id);
 }
 
 function findBy(filter) {

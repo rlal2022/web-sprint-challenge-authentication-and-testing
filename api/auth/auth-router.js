@@ -14,11 +14,21 @@ router.post(
   checkUsername,
   checkCredentials,
   async (req, res, next) => {
-    let { username, password } = req.body;
-    const hash = bcrypt.hashSync(password, 8);
-    password = hash;
+    // let { username, password } = req.body;
+    // const hash = bcrypt.hashSync(password, 8);
+    // password = hash;
 
-    User.add({ username, password })
+    // User.add({ username, password })
+    //   .then((newUser) => {
+    //     res.status(201).json(newUser);
+    //   })
+    //   .catch(next);
+
+    let user = req.body;
+    const hash = bcrypt.hashSync(user.password, 8);
+    user.password = hash;
+
+    User.add(user)
       .then((newUser) => {
         res.status(201).json(newUser);
       })
@@ -56,14 +66,24 @@ router.post(
   checkIfUsernameExists,
   checkCredentials,
   (req, res, next) => {
-    const { password } = req.body;
+    // const { password } = req.body;
 
-    if (bcrypt.compareSync(password, req.user.password)) {
-      const token = buildToken(req.user);
-      res.status(200).json({ message: `welcome, ${req.user.username}`, token });
-    } else {
-      res.status(401).json({ message: "invalid credentials" });
-    }
+    // if (bcrypt.compareSync(password, req.user.password)) {
+    //   const token = buildToken(req.user);
+    //   res.status(200).json({ message: `welcome, ${req.user.username}`, token });
+    // } else {
+    //   res.status(401).json({ message: "invalid credentials" });
+    // }
+
+    const { username, password } = req.body;
+    User.findBy({ username: username }).then(([user]) => {
+      if (user && bcrypt.compareSync(password, user.password)) {
+        const token = buildToken(user);
+        res.status(200).json({ message: `welcome ${username}`, token });
+      } else {
+        next({ status: 401, message: "invalid credentials" });
+      }
+    });
 
     /*
     IMPLEMENT

@@ -10,11 +10,11 @@ function findById(id) {
 
 async function add({ username, password }) {
   const [id] = await db("users").insert({ username, password });
-  return findById(id);
+  return findById({ username, password });
 }
 
 function findBy(filter) {
-  return db("users").where(filter).orderBy("id");
+  return db("users").where(filter).first();
 }
 
 module.exports = { find, findById, add, findBy };

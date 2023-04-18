@@ -13,8 +13,8 @@ async function add({ username, password }) {
   return findById(id);
 }
 
-function findBy(username) {
-  return db("users").where("username", username).first();
+function findBy(filter) {
+  return db("users").where(filter).orderBy("id");
 }
 
 module.exports = { find, findById, add, findBy };

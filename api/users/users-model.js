@@ -1,8 +1,8 @@
 const db = require("../../data/dbConfig");
 
-// function find() {
-//   return db("users");
-// }
+function find() {
+  return db("users");
+}
 
 function findById(id) {
   return db("users").where("id", id).first();

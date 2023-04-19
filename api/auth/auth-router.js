@@ -11,8 +11,9 @@ const {
 
 router.post(
   "/register",
-  checkUsername,
   checkCredentials,
+  checkUsername,
+
   async (req, res, next) => {
     let { username, password } = req.body;
     console.log(req.body, "register");
@@ -62,8 +63,9 @@ router.post(
 
 router.post(
   "/login",
-  checkIfUsernameExists,
   checkCredentials,
+  checkIfUsernameExists,
+
   (req, res, next) => {
     const { password } = req.body;
     console.log(req.body, "login");
